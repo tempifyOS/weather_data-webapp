@@ -7,6 +7,8 @@ app = Flask(__name__, template_folder='templates',static_folder='static')
 def index():
     return render_template('index.html')
 
+# Testing edit/commit to repo
+
 
 if __name__ == '__main__':
     # local dev with auto‑reload and debug info
