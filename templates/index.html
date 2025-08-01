@@ -252,7 +252,7 @@
   </div>
 
   <script>
-    // theme management
+    // theme UI/UX
     const themeToggle = document.getElementById("theme-toggle");
     const themeLabel = document.getElementById("theme-label");
 
@@ -283,14 +283,13 @@
       setTheme(current === "dark" ? "light" : "dark");
     });
 
-    // unit toggle (placeholder behavior)
+    // temp unit toggle (currently no logic)
     const cBtn = document.getElementById("celsius-btn");
     const fBtn = document.getElementById("fahrenheit-btn");
     function setUnit(unit) {
       if (unit === "metric") {
         cBtn.classList.add("active");
         fBtn.classList.remove("active");
-        // you can hook into actual logic here to convert display
       } else {
         fBtn.classList.add("active");
         cBtn.classList.remove("active");
