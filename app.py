@@ -17,7 +17,12 @@ def weather():
     return render_template('weather.html', weather=weather_data)
 
 def parse_location(location_input):
-    # parse coordinates or call convert_to_coordinates
+    input = location_input.strip()
+    # determine if input is coordinates
+    if ',' in input and all(part.strip().replace('.', '', 1).replace('-', '', 1).isdigit() for part in input.split(',')):
+        lat, lon = map(float, input.split(','))
+    else:
+        convert_to_coordinates(input)
     return lat, lon
 
 def convert_to_coordinates(location_input):
