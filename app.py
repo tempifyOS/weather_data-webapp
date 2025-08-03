@@ -93,19 +93,19 @@ def index():
 @app.route('/weather', methods=['POST'])
 def weather():
     location_input = request.form.get('location')
-    unit = request.form.get('unit', 'metric')
+    unit = request.form.get('unit', 'imperial')
     try:
         weather_data = fetch_weather_all(location_input, unit)
         print(weather_data)  # Debugging output
-        return render_template('weather.html', weather=weather_data)
+        return render_template('weather.html', weather=weather_data, unit=unit)
     except Exception as e:
         error_msg = str(e)
-        return render_template('index.html', error=error_msg)
+        return render_template('index.html', error=error_msg, unit=unit)
 
 @app.route('/api/weather', methods=['GET'])
 def api_weather():
     location = request.args.get('location')
-    unit = request.args.get('unit', 'metric')
+    unit = request.args.get('unit', 'imperial')
     try:
         weather_data = fetch_weather_all(location, unit)
         return jsonify(weather_data)

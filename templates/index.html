@@ -171,8 +171,8 @@
           🌙 <span id="theme-label">Dark</span>
         </button>
         <div class="unit-switch-container" style="display:flex; gap:4px; align-items:center;">
-          <button id="celsius-btn" class="unit-switch active">°C</button>
-          <button id="fahrenheit-btn" class="unit-switch">°F</button>
+          <button id="celsius-btn" class="unit-switch">°C</button>
+          <button id="fahrenheit-btn" class="unit-switch active">°F</button>
         </div>
       </div>
     </header>
@@ -188,6 +188,7 @@
           class="input"
           id="location-input"
         />
+        <input type="hidden" name="unit" id="unit-input" value="imperial" />
         <button type="submit" class="btn">Lookup</button>
       </form>
 
@@ -207,7 +208,7 @@
           <div style="flex:2; display:flex; gap:2rem; flex-wrap:wrap;">
             <div>
               <div class="small">Temperature</div>
-              <div style="font-size:1.5rem;" id="temp">--°C</div>
+              <div style="font-size:1.5rem;" id="temp">--°F</div>
             </div>
             <div>
               <div class="small">Condition</div>
@@ -219,7 +220,7 @@
             </div>
             <div>
               <div class="small">Wind</div>
-              <div style="font-size:1.5rem;" id="wind">-- km/h</div>
+              <div style="font-size:1.5rem;" id="wind">-- mph</div>
             </div>
           </div>
         </div>
@@ -283,20 +284,45 @@
       setTheme(current === "dark" ? "light" : "dark");
     });
 
-    // temp unit toggle (currently no logic)
+    // temp unit toggle
     const cBtn = document.getElementById("celsius-btn");
     const fBtn = document.getElementById("fahrenheit-btn");
-    function setUnit(unit) {
-      if (unit === "metric") {
+    const unitInput = document.getElementById("unit-input");
+    const tempDisplay = document.getElementById("temp");
+    const windDisplay = document.getElementById("wind");
+
+    let currentUnit = localStorage.getItem("unit") || "imperial"; // default to F
+
+    function applyUnit(u) {
+      currentUnit = u;
+      localStorage.setItem("unit", u);
+      // toggle active styles
+      if (u === "metric") {
         cBtn.classList.add("active");
         fBtn.classList.remove("active");
+        tempDisplay.textContent = tempDisplay.textContent.replace("°F", "°C");
+        windDisplay.textContent = windDisplay.textContent.replace("mph", "km/h");
+        unitInput.value = "metric";
       } else {
         fBtn.classList.add("active");
         cBtn.classList.remove("active");
+        tempDisplay.textContent = tempDisplay.textContent.replace("°C", "°F");
+        windDisplay.textContent = windDisplay.textContent.replace("km/h", "mph");
+        unitInput.value = "imperial";
       }
     }
-    cBtn.addEventListener("click", (e) => { e.preventDefault(); setUnit("metric"); });
-    fBtn.addEventListener("click", (e) => { e.preventDefault(); setUnit("imperial"); });
+
+    cBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      applyUnit("metric");
+    });
+    fBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      applyUnit("imperial");
+    });
+
+    // initialize unit UI
+    applyUnit(currentUnit);
 
     // footer year
     document.getElementById('footer-year').textContent = new Date().getFullYear();
