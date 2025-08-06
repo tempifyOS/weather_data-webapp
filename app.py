@@ -82,7 +82,8 @@ def fetch_weather_all(location_query, unit="metric"):
         "longitude": lon,
         "timezone": tz,
         "current": current,
-        "forecast": forecast
+        "forecast": forecast,
+        "current_description": wc_map.get(current.get("weathercode"), "Unknown")
     }
     return weather_data
 
